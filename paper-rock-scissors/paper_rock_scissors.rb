@@ -11,14 +11,12 @@ puts "Choose Paper, Rock or Scissors (P/R/S):"
 
 player_choice = gets.chomp
 
-while player_choice.downcase != 'p' && player_choice.downcase != 'r' && player_choice.downcase != 's' do  
+while !choices.include?player_choice do  
   puts "You must enter P, R or S. Please try again (P/R/S):"
   player_choice = gets.chomp
 end
 
 comp_choice = choices.sample
-
-
 
 case player_choice.downcase
 when 'p'
@@ -58,3 +56,5 @@ puts "Do you want to play again? (Y/N)"
 continue = gets.chomp
 
 end while continue.downcase == 'y'
+
+puts "Thanks for playing!"

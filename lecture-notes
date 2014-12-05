@@ -1,0 +1,19 @@
+Lecture part 1
+
+Basic Ruby Styles
+
+2 spaces for indentation
+
+methods, files, modules, vars = snake_case
+classes = CamelCase
+
+everthing is an object, can take methods
+
+.methods returns list of applicable methods
+
+mutating the caller - i.e. .uniq does not, .uniq! does
+not all methods without a bang don't mutate the caller, but all methods with a bang do
+
+hashes are key based, keys can be whatever you want
+arrays are index based, integers, starting with 0
+

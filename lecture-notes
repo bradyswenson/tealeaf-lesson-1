@@ -24,15 +24,90 @@ Lecure part 2
 Whenever TIMTOWTDI (there is more than one way to do it), you should look for the pros and cons. Using "string interpolation" (the second) instead of "string concatenation" (the first):
 
 Pros:
-
 Is less typing
 Automatically calls to_s for you
 More idiomatic within the Ruby community
 Faster to accomplish during runtime
-Cons:
 
+Cons:
 Automatically calls to_s for you (maybe you thought you had a string, and the to_s representation is not what you wanted, and hides the fact that it wasn't a string)
 Requires you to use " to delimit your string instead of ' (perhaps you have a habit of using ', or you previously typed a string using that and only later needed to use string interpolation)
 
 
 2. extract repetitive logic to methods
+
+3. keep track of variable type/class
+
+4. var scope
+
+Vars declared outside are available to inner scopes
+Vars declared inside are not available to outer scope
+
+5. Pass by value / passd by reference
+
+Pass by value: Always just passing in the value, not the reference. When passed in, it basically becomes a new local var within the method.
+
+Pass by reference: Always pass in the reference, modifying in the method modifies the reference, and thus the value outside the scope.
+
+def some_method(str)
+  str.changeit
+end
+
+outer_str = 'hi'
+some_method(outer_str)
+
+Ruby does something in between 
+
+Pass by value example (does not change the outer scope var): 
+def some_method(obj)
+  obj = [6, 7, 8]
+end
+
+outer_obj = [1, 2, 2, 3, 3]
+some_method(outer_obj)
+
+puts outer_obj
+
+output:
+1
+2
+2
+3
+3
+
+Pass by value example:
+def some_method(obj)
+  obj = [6, 7, 8]
+end
+
+outer_obj = [1, 2, 2, 3, 3]
+some_method(outer_obj)
+
+puts outer_obj
+
+output:
+1
+2
+2
+3
+3
+
+Pass by reference example (via a method that mutates the caller):
+def some_method(obj)
+  obj.uniq!
+end
+
+outer_obj = [1, 2, 2, 3, 3]
+some_method(outer_obj)
+
+puts outer_obj
+
+output:
+1
+2
+3
+
+
+
+
+

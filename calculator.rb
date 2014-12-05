@@ -1,3 +1,4 @@
+require 'pry'
 
 def say(msg)
   puts "=> #{msg}"
@@ -12,11 +13,11 @@ num2 = gets.chomp
 say "1) add 2) subtract 3) multiply 4) divide"
 operator = gets.chomp
 
-if operator == 1
+if operator == '1'
   result = num1.to_i + num2.to_i
-elsif operator == 2
+elsif operator == '2'
   result = num1.to_i - num2.to_i
-elsif operator == 3
+elsif operator == '3'
   result = num1.to_i * num2.to_i
 else
   result = num1.to_f / num2.to_f

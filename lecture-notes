@@ -17,3 +17,22 @@ not all methods without a bang don't mutate the caller, but all methods with a b
 hashes are key based, keys can be whatever you want
 arrays are index based, integers, starting with 0
 
+
+Lecure part 2
+
+1. string interpolation vs concat > http://stackoverflow.com/questions/10076579/string-concatenation-vs-interpolation-in-ruby
+Whenever TIMTOWTDI (there is more than one way to do it), you should look for the pros and cons. Using "string interpolation" (the second) instead of "string concatenation" (the first):
+
+Pros:
+
+Is less typing
+Automatically calls to_s for you
+More idiomatic within the Ruby community
+Faster to accomplish during runtime
+Cons:
+
+Automatically calls to_s for you (maybe you thought you had a string, and the to_s representation is not what you wanted, and hides the fact that it wasn't a string)
+Requires you to use " to delimit your string instead of ' (perhaps you have a habit of using ', or you previously typed a string using that and only later needed to use string interpolation)
+
+
+2. extract repetitive logic to methods

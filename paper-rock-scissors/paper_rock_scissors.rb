@@ -11,7 +11,7 @@ puts "Choose Paper, Rock or Scissors (P/R/S):"
 
 player_choice = gets.chomp
 
-while player_choice != 'p' && player_choice != 'r' && player_choice != 's' do  
+while player_choice.downcase != 'p' && player_choice.downcase != 'r' && player_choice.downcase != 's' do  
   puts "You must enter P, R or S. Please try again (P/R/S):"
   player_choice = gets.chomp
 end

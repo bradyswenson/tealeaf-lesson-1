@@ -20,7 +20,6 @@ begin
 
   case player_choice.downcase
   when 'p'
-    
     case comp_choice
     when 'p'
       puts "You and the computer both chose paper. Push."
@@ -29,7 +28,6 @@ begin
     when 's'
       puts "Computer's scissors cut your paper. You lose."
     end
-
   when 'r'
     case comp_choice
     when 'p'
@@ -39,7 +37,6 @@ begin
     when 's'
       puts "Your rock smashes computer's scissors. You win!"
     end
-
   when 's'
     case comp_choice
     when 'p'
@@ -49,7 +46,6 @@ begin
     when 's'
       puts "You and the computer both chose scissors. Push."
     end
-
   end
     
   puts "Do you want to play again? (Y/N)"

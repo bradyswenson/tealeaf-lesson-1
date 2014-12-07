@@ -1,16 +1,4 @@
 # Tic Tac Toe game
-# 
-# flow / logic:
-# Draw board
-# Player chooses a square
-# Computer chooses a square
-# Loop until there is a winner or all squares are selected
-#
-# data structures: 
-# hash of board positions and contents (empty, X, O)
-# hash of arrays player choices and computer choices
-# array of remaining options
-# array of winning combinations (to check for winner)
 
 require 'pry'
 
@@ -35,7 +23,6 @@ end
 
 def computer_choice(bs, ro, wc) #board_status, remaining_options, winning_combinations
    wc.each do |combo|
-    #binding.pry
     if bs[combo[0]] == 'O' and bs[combo[1]] == 'O' 
       if bs[combo[2]] == ' '
         return combo[2]
@@ -62,18 +49,21 @@ def computer_choice(bs, ro, wc) #board_status, remaining_options, winning_combin
       end
     end
   end
-  return ro.sample
+  if bs[5] == ' '
+    return 5
+  else
+    return ro.sample
+  end
 end
 
 def winner?(bs, wc, ro, score) #bs = board_status, winning_combinations, remaining_options, score
   wc.each do |combo|
-    #binding.pry
     if bs[combo[0]] == 'X' and bs[combo[1]] == 'X' and bs[combo[2]] == 'X'
       score[:player] += 1
       return 'Player'
     elsif bs[combo[0]] == 'O' and bs[combo[1]] == 'O' and bs[combo[2]] == 'O'
       score[:computer] += 1
-      return 'Computer'
+      return 'Computer' 
     elsif ro == []
       score[:tie] += 1
       return 'Tie'
@@ -102,14 +92,14 @@ begin #continue loop
     board_status[player_choice] = 'X'
     remaining_options.delete(player_choice)
 
-    comp_choice = computer_choice(board_status, remaining_options, winning_combinations)
-
-    
-
-    board_status[comp_choice] = 'O'
-    remaining_options.delete(comp_choice)
-
     winner = winner?(board_status, winning_combinations, remaining_options, score)
+
+    if winner == nil 
+      comp_choice = computer_choice(board_status, remaining_options, winning_combinations)
+      board_status[comp_choice] = 'O'
+      remaining_options.delete(comp_choice)
+      winner = winner?(board_status, winning_combinations, remaining_options, score)
+    end
 
   end until winner == 'Player' || winner == 'Computer' || winner == 'Tie'
 

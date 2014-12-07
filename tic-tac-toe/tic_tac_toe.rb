@@ -81,7 +81,6 @@ begin #continue loop
 
     #track player move
     board[player_choice] = 'X'
-    remaining_options.delete(player_choice)
 
     #check for winner
     winner = check_winner(board, winning_combinations, score)
@@ -91,7 +90,6 @@ begin #continue loop
       comp_choice = get_computer_choice(board, winning_combinations)
       #track computer move
       board[comp_choice] = 'O'
-      remaining_options.delete(comp_choice)
       #update winner check
       winner = check_winner(board, winning_combinations, score)
     end

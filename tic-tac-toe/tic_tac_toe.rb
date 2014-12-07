@@ -16,8 +16,8 @@ require 'pry'
 
 board_status = Hash.new
 remaining_options = Array.new
-player_status = Hash.new
-winning_combinations = Array.new
+winning_combinations = [[1,2,3], [1,5,9], [1,4,7], [2,5,8], [3,5,7], [4,5,6], [7,8,9], [3,6,9]] 
+score = {player: 0, computer: 0, tie: 0}
 
 def draw_board(bs) #bs = board_status hash
   puts "
@@ -33,20 +33,53 @@ def draw_board(bs) #bs = board_status hash
 "
 end
 
-def winner?(winning_combinations, player_status)
-  if winning_combinations.include?(player_status[:player]) || winning_combinations.include?(player_status[:computer])
-    return true
-  else
-    return false
+def computer_choice(bs, ro, wc) #board_status, remaining_options, winning_combinations
+   wc.each do |combo|
+    #binding.pry
+    if bs[combo[0]] == 'O' and bs[combo[1]] == 'O' 
+      if bs[combo[2]] == ' '
+        return combo[2]
+      end
+    elsif bs[combo[1]] == 'O' and bs[combo[2]] == 'O' 
+      if bs[combo[0]] == ' '
+        return combo[0]
+      end
+    elsif bs[combo[0]] == 'O' and bs[combo[2]] == 'O' 
+      if bs[combo[1]] == ' '
+        return combo[1]
+      end
+    elsif bs[combo[0]] == 'X' and bs[combo[1]] == 'X'
+      if bs[combo[2]] == ' '
+        return combo[2]
+      end
+    elsif bs[combo[1]] == 'X' and bs[combo[2]] == 'X'
+      if bs[combo[0]] == ' '
+        return combo[0]
+      end
+    elsif bs[combo[0]] == 'X' and bs[combo[2]] == 'X'
+      if bs[combo[1]] == ' '
+        return combo[1]
+      end
+    end
   end
+  return ro.sample
 end
 
-def who_won?(winning_combinations, player_status)
-    if winning_combinations.include?(player_status[:player])
-      return "You win!"
-    elsif winning_combinations.include?(player_status[:computer])
-      return "Computer wins."
+def winner?(bs, wc, ro, score) #bs = board_status, winning_combinations, remaining_options, score
+  wc.each do |combo|
+    #binding.pry
+    if bs[combo[0]] == 'X' and bs[combo[1]] == 'X' and bs[combo[2]] == 'X'
+      score[:player] += 1
+      return 'Player'
+    elsif bs[combo[0]] == 'O' and bs[combo[1]] == 'O' and bs[combo[2]] == 'O'
+      score[:computer] += 1
+      return 'Computer'
+    elsif ro == []
+      score[:tie] += 1
+      return 'Tie'
     end
+  end
+  return nil
 end
 
 begin #continue loop
@@ -54,8 +87,7 @@ begin #continue loop
   #initialize game data
   board_status = {1 => ' ', 2 =>  ' ', 3 => ' ', 4 => ' ', 5 => ' ', 6 => ' ', 7 => ' ', 8 => ' ', 9 => ' '}
   remaining_options = Array(1..9)
-  player_status = {player: [], computer: []}
-  winning_combinations = [[1,2,3],[1,5,9],[1,4,7],[2,5,8],[3,5,7],[4,5,6],[7,8,9],[3,6,9]]
+
 
   begin #start game
 
@@ -68,20 +100,32 @@ begin #continue loop
     end until remaining_options.include?(player_choice)
 
     board_status[player_choice] = 'X'
-    player_status[:player].push(player_choice)
     remaining_options.delete(player_choice)
 
-    computer_choice = remaining_options.sample
+    comp_choice = computer_choice(board_status, remaining_options, winning_combinations)
 
-    board_status[computer_choice] = 'O'
-    player_status[:computer].push(computer_choice)
-    remaining_options.delete(computer_choice)
+    
 
-  end until winner?(winning_combinations, player_status)
+    board_status[comp_choice] = 'O'
+    remaining_options.delete(comp_choice)
+
+    winner = winner?(board_status, winning_combinations, remaining_options, score)
+
+  end until winner == 'Player' || winner == 'Computer' || winner == 'Tie'
 
   draw_board(board_status)
-  puts who_won?(winning_combinations, player_status)
 
+  #winner = winner?(board_status, winning_combinations, remaining_options, score)
+
+  if winner == 'Player' 
+    puts "You won!"
+  elsif winner == 'Computer'
+    puts "You lost."
+  elsif winner == 'Tie'
+    puts "Tie."
+  end
+
+  puts "Player: #{score[:player]} -- Computer: #{score[:computer]} -- Ties: #{score[:tie]}"
   puts "Do you want to play again? (Y/N)"
   continue = gets.chomp
 

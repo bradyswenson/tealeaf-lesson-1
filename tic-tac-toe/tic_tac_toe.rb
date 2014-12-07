@@ -67,7 +67,6 @@ begin #continue loop
 
   #initialize game data
   board = {1 => ' ', 2 =>  ' ', 3 => ' ', 4 => ' ', 5 => ' ', 6 => ' ', 7 => ' ', 8 => ' ', 9 => ' '}
-  remaining_options = Array(1..9)
 
   begin #game loop
 
@@ -77,7 +76,7 @@ begin #continue loop
     begin 
       puts "Please choose an unfilled position (1-9) to place your X:"
       player_choice = gets.chomp.to_i
-    end until remaining_options.include?(player_choice)
+    end until remaining_options(board).include?(player_choice)
 
     #track player move
     board[player_choice] = 'X'

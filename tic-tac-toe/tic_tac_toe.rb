@@ -3,7 +3,6 @@
 require 'pry'
 
 board_status = Hash.new
-remaining_options = Array.new
 winning_combinations = [[1,2,3], [1,5,9], [1,4,7], [2,5,8], [3,5,7], [4,5,6], [7,8,9], [3,6,9]] 
 score = {player: 0, computer: 0, tie: 0}
 
@@ -21,7 +20,11 @@ def draw_board(bs) #board_status
 "
 end
 
-def get_computer_choice(bs, ro, wc) #board_status, remaining_options, winning_combinations
+def remaining_options(bs) #board_status
+  bs.keys.select {|position| bs[position] == ' '}
+end
+
+def get_computer_choice(bs, wc) #board_status, remaining_options, winning_combinations
    wc.each do |combo|
     if bs[combo[0]] == 'O' and bs[combo[1]] == 'O' and bs[combo[2]] == ' '
         return combo[2]
@@ -40,11 +43,11 @@ def get_computer_choice(bs, ro, wc) #board_status, remaining_options, winning_co
   if bs[5] == ' '
     return 5
   else
-    return ro.sample
+    return remaining_options(bs).sample
   end
 end
 
-def check_winner(bs, wc, ro, score) #board_status, winning_combinations, remaining_options, score
+def check_winner(bs, wc, score) #board_status, winning_combinations, score
   wc.each do |combo|
     if bs[combo[0]] == 'X' and bs[combo[1]] == 'X' and bs[combo[2]] == 'X'
       score[:player] += 1
@@ -52,7 +55,7 @@ def check_winner(bs, wc, ro, score) #board_status, winning_combinations, remaini
     elsif bs[combo[0]] == 'O' and bs[combo[1]] == 'O' and bs[combo[2]] == 'O'
       score[:computer] += 1
       return 'Computer' 
-    elsif ro == []
+    elsif remaining_options(bs) == []
       score[:tie] += 1
       return 'Tie'
     end
@@ -81,16 +84,16 @@ begin #continue loop
     remaining_options.delete(player_choice)
 
     #check for winner
-    winner = check_winner(board_status, winning_combinations, remaining_options, score)
+    winner = check_winner(board_status, winning_combinations, score)
 
     #if no winner, get computer move
     if winner == nil 
-      comp_choice = get_computer_choice(board_status, remaining_options, winning_combinations)
+      comp_choice = get_computer_choice(board_status, winning_combinations)
       #track computer move
       board_status[comp_choice] = 'O'
       remaining_options.delete(comp_choice)
       #update winner check
-      winner = check_winner(board_status, winning_combinations, remaining_options, score)
+      winner = check_winner(board_status, winning_combinations, score)
     end
 
   end until winner == 'Player' || winner == 'Computer' || winner == 'Tie'

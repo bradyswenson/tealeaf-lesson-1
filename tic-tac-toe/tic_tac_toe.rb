@@ -66,7 +66,6 @@ begin #continue loop
   board_status = {1 => ' ', 2 =>  ' ', 3 => ' ', 4 => ' ', 5 => ' ', 6 => ' ', 7 => ' ', 8 => ' ', 9 => ' '}
   remaining_options = Array(1..9)
 
-
   begin #game loop
 
     draw_board(board_status)

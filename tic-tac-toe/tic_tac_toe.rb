@@ -23,30 +23,18 @@ end
 
 def get_computer_choice(bs, ro, wc) #board_status, remaining_options, winning_combinations
    wc.each do |combo|
-    if bs[combo[0]] == 'O' and bs[combo[1]] == 'O' 
-      if bs[combo[2]] == ' '
+    if bs[combo[0]] == 'O' and bs[combo[1]] == 'O' and bs[combo[2]] == ' '
         return combo[2]
-      end
-    elsif bs[combo[1]] == 'O' and bs[combo[2]] == 'O' 
-      if bs[combo[0]] == ' '
+    elsif bs[combo[1]] == 'O' and bs[combo[2]] == 'O' and bs[combo[0]] == ' '
         return combo[0]
-      end
-    elsif bs[combo[0]] == 'O' and bs[combo[2]] == 'O' 
-      if bs[combo[1]] == ' '
+    elsif bs[combo[0]] == 'O' and bs[combo[2]] == 'O' and bs[combo[1]] == ' '
         return combo[1]
-      end
-    elsif bs[combo[0]] == 'X' and bs[combo[1]] == 'X'
-      if bs[combo[2]] == ' '
+    elsif bs[combo[0]] == 'X' and bs[combo[1]] == 'X' and bs[combo[2]] == ' '
         return combo[2]
-      end
-    elsif bs[combo[1]] == 'X' and bs[combo[2]] == 'X'
-      if bs[combo[0]] == ' '
+    elsif bs[combo[1]] == 'X' and bs[combo[2]] == 'X' and bs[combo[0]] == ' '
         return combo[0]
-      end
-    elsif bs[combo[0]] == 'X' and bs[combo[2]] == 'X'
-      if bs[combo[1]] == ' '
+    elsif bs[combo[0]] == 'X' and bs[combo[2]] == 'X' and bs[combo[1]] == ' '
         return combo[1]
-      end
     end
   end
   if bs[5] == ' '

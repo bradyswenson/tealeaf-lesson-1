@@ -7,6 +7,7 @@ winning_combinations = [[1,2,3], [1,5,9], [1,4,7], [2,5,8], [3,5,7], [4,5,6], [7
 score = {player: 0, computer: 0, tie: 0}
 
 def draw_board(b) #board
+  system 'clear'
   puts "
              |     |
           #{b[1]}  |  #{b[2]}  |  #{b[3]}  

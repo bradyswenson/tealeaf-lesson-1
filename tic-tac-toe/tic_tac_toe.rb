@@ -7,7 +7,7 @@ remaining_options = Array.new
 winning_combinations = [[1,2,3], [1,5,9], [1,4,7], [2,5,8], [3,5,7], [4,5,6], [7,8,9], [3,6,9]] 
 score = {player: 0, computer: 0, tie: 0}
 
-def draw_board(bs) #bs = board_status hash
+def draw_board(bs) #board_status
   puts "
              |     |
           #{bs[1]}  |  #{bs[2]}  |  #{bs[3]}  
@@ -56,7 +56,7 @@ def computer_choice(bs, ro, wc) #board_status, remaining_options, winning_combin
   end
 end
 
-def winner?(bs, wc, ro, score) #bs = board_status, winning_combinations, remaining_options, score
+def winner?(bs, wc, ro, score) #board_status, winning_combinations, remaining_options, score
   wc.each do |combo|
     if bs[combo[0]] == 'X' and bs[combo[1]] == 'X' and bs[combo[2]] == 'X'
       score[:player] += 1
@@ -79,33 +79,36 @@ begin #continue loop
   remaining_options = Array(1..9)
 
 
-  begin #start game
+  begin #game loop
 
     draw_board(board_status)
     
-    #get player input
+    #get player move
     begin 
       puts "Please choose an unfilled position (1-9) to place your X:"
       player_choice = gets.chomp.to_i
     end until remaining_options.include?(player_choice)
 
+    #track player move
     board_status[player_choice] = 'X'
     remaining_options.delete(player_choice)
 
+    #check for winner
     winner = winner?(board_status, winning_combinations, remaining_options, score)
 
-    if winner == nil 
+    #if no winner, get computer move
+    if winner? == nil 
       comp_choice = computer_choice(board_status, remaining_options, winning_combinations)
+      #track computer move
       board_status[comp_choice] = 'O'
       remaining_options.delete(comp_choice)
+      #update winner check
       winner = winner?(board_status, winning_combinations, remaining_options, score)
     end
 
   end until winner == 'Player' || winner == 'Computer' || winner == 'Tie'
 
   draw_board(board_status)
-
-  #winner = winner?(board_status, winning_combinations, remaining_options, score)
 
   if winner == 'Player' 
     puts "You won!"

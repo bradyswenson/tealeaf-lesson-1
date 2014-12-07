@@ -21,7 +21,7 @@ def draw_board(bs) #board_status
 "
 end
 
-def computer_choice(bs, ro, wc) #board_status, remaining_options, winning_combinations
+def get_computer_choice(bs, ro, wc) #board_status, remaining_options, winning_combinations
    wc.each do |combo|
     if bs[combo[0]] == 'O' and bs[combo[1]] == 'O' 
       if bs[combo[2]] == ' '
@@ -56,7 +56,7 @@ def computer_choice(bs, ro, wc) #board_status, remaining_options, winning_combin
   end
 end
 
-def winner?(bs, wc, ro, score) #board_status, winning_combinations, remaining_options, score
+def check_winner(bs, wc, ro, score) #board_status, winning_combinations, remaining_options, score
   wc.each do |combo|
     if bs[combo[0]] == 'X' and bs[combo[1]] == 'X' and bs[combo[2]] == 'X'
       score[:player] += 1
@@ -94,16 +94,16 @@ begin #continue loop
     remaining_options.delete(player_choice)
 
     #check for winner
-    winner = winner?(board_status, winning_combinations, remaining_options, score)
+    winner = check_winner(board_status, winning_combinations, remaining_options, score)
 
     #if no winner, get computer move
-    if winner? == nil 
-      comp_choice = computer_choice(board_status, remaining_options, winning_combinations)
+    if winner == nil 
+      comp_choice = get_computer_choice(board_status, remaining_options, winning_combinations)
       #track computer move
       board_status[comp_choice] = 'O'
       remaining_options.delete(comp_choice)
       #update winner check
-      winner = winner?(board_status, winning_combinations, remaining_options, score)
+      winner = check_winner(board_status, winning_combinations, remaining_options, score)
     end
 
   end until winner == 'Player' || winner == 'Computer' || winner == 'Tie'

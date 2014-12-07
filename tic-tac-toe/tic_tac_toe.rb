@@ -14,10 +14,10 @@
 
 require 'pry'
 
-board_status = {1 => ' ', 2 =>  ' ', 3 => ' ', 4 => ' ', 5 => ' ', 6 => ' ', 7 => ' ', 8 => ' ', 9 => ' '}
-remaining_options = Array(1..9)
-player_status = {player: [], computer: []}
-winning_combinations = [[1,2,3],[1,5,9],[1,4,7],[2,5,8],[3,5,7],[4,5,6],[7,8,9],[3,6,9]]
+board_status = Hash.new
+remaining_options = Array.new
+player_status = Hash.new
+winning_combinations = Array.new
 
 def draw_board(bs) #bs = board_status hash
   puts "
@@ -34,22 +34,31 @@ def draw_board(bs) #bs = board_status hash
 end
 
 def winner?(winning_combinations, player_status)
-  if winning_combinations.include?(player_status[:player]) 
-    return "You win!"
-  elsif winning_combinations.include?(player_status[:computer])  
-    return "Computer wins."
+  if winning_combinations.include?(player_status[:player]) || winning_combinations.include?(player_status[:computer])
+    return true
+  else
+    return false
   end
 end
 
-begin
+def who_won?(winning_combinations, player_status)
+    if winning_combinations.include?(player_status[:player])
+      return "You win!"
+    elsif winning_combinations.include?(player_status[:computer])
+      return "Computer wins."
+    end
+end
 
+begin #continue loop
+
+  #initialize game data
   board_status = {1 => ' ', 2 =>  ' ', 3 => ' ', 4 => ' ', 5 => ' ', 6 => ' ', 7 => ' ', 8 => ' ', 9 => ' '}
   remaining_options = Array(1..9)
   player_status = {player: [], computer: []}
   winning_combinations = [[1,2,3],[1,5,9],[1,4,7],[2,5,8],[3,5,7],[4,5,6],[7,8,9],[3,6,9]]
 
+  begin #start game
 
-  begin
     draw_board(board_status)
     
     #get player input
@@ -68,21 +77,17 @@ begin
     player_status[:computer].push(computer_choice)
     remaining_options.delete(computer_choice)
 
-
-   # binding.pry
-
-    #make random computer choice
   end until winner?(winning_combinations, player_status)
 
   draw_board(board_status)
-  puts winner?(winning_combinations, player_status)
+  puts who_won?(winning_combinations, player_status)
 
   puts "Do you want to play again? (Y/N)"
   continue = gets.chomp
 
 end while continue.downcase == 'y'
 
-
+puts "Thanks for playing!"
 
 
 

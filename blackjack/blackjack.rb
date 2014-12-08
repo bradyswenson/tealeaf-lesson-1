@@ -95,13 +95,10 @@ def get_hand_total(hand, *final) # final = optional Boolean to indicate final ha
     end
 	end
   if final == [1]
-    #binding.pry
     if total[1] > total[0]
       total[0] = total[1]
     end
   end
-  #XXXX add exception for 2 aces, should return [2, 13]
-  #add exception for dealer, has to stay on 17+ with an ace, if total[1] >= 17, set both to total[1]
 	return total
 end
 
@@ -140,10 +137,11 @@ def bust?(hand)
 	return false
 end
 
+system 'clear'
 puts "Welcome to the Blackjack table. What's your first name?"
 player_name = gets.chomp
 
-puts "Thanks for playing, #{player_name}. Here we go..."
+puts "Thanks for playing, #{player_name}. Good luck. Here we go..."
 sleep (1.5)
 
 deck = initialize_deck(deck)
@@ -161,8 +159,6 @@ begin #continue loop
 
 	draw_table(deck, player_hand, dealer_hand)
 
-  #binding.pry
-
 	if !blackjack?(player_hand) and !blackjack?(dealer_hand)
     begin #player loop
 
@@ -175,8 +171,6 @@ begin #continue loop
     		player_hand.push(deal_card(deck))
     		draw_table(deck, player_hand, dealer_hand)
     	end
-
-        #binding.pry
 
   	end until choice == 's' || bust?(player_hand) == true
 
@@ -191,7 +185,6 @@ begin #continue loop
 
    end 
 
-
 	puts "#{check_winner(dealer_hand, player_hand, player_name)}"	
 
 	if deck.count < 15
@@ -201,15 +194,7 @@ begin #continue loop
 		sleep (1)
 	end
 
-
   puts "Do you want to play again? (Y/N)"
   continue = gets.chomp
 
 end while continue.downcase == 'y'
-
-
-#binding.pry 
-
-
-
-

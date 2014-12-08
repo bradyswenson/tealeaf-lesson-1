@@ -175,11 +175,11 @@ begin #continue loop
   	end until choice == 's' || bust?(player_hand) == true
 
     if !bust?(player_hand)
-      if get_hand_total(dealer_hand)[0] < 17 
+      if get_hand_total(dealer_hand)[1] < 17 #use ace total to make dealer stand on soft 17
         begin #dealer_loop
             dealer_hand.push(deal_card(deck))
             draw_table(deck, player_hand, dealer_hand)
-        end until get_hand_total(dealer_hand)[0] >= 17 
+        end until get_hand_total(dealer_hand)[1] >= 17 
       end
     end 
 

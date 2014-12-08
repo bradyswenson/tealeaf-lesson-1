@@ -59,8 +59,6 @@ def check_winner(dealer_hand, player_hand, player_name)
     return "You lost. Better luck next hand #{player_name}."
   elsif  blackjack?(player_hand)
     return "Blackjack! You win!"
-  elsif player_total == 21
-    return "Well played #{player_name}, you win!"
   elsif bust?(player_hand)
     return "Sorry #{player_name}, you busted."
   elsif bust?(dealer_hand)

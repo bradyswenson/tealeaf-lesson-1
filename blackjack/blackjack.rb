@@ -46,8 +46,8 @@ def draw_table(deck, player_hand, dealer_hand)
 	system 'clear'
 	draw_hand(dealer_hand)
 	draw_hand(player_hand)
-	binding.pry
-	puts "Player has #{get_hand_total(player_hand)[0]}. Dealer has #{get_hand_total(dealer_hand)[0]}."
+	#binding.pry
+	puts "Player has #{pretty_hand_total(player_hand)}. Dealer has #{pretty_hand_total(dealer_hand)}."
 end
 
 def start_player_hand(deck, player_hand)
@@ -61,10 +61,30 @@ def start_dealer_hand(deck, dealer_hand)
 end
 
 def check_winner(dealer_hand, player_hand)
-	return 'Player'
+	player_total = get_hand_total(player_hand, 1)[0]
+  dealer_total = get_hand_total(dealer_hand, 1)[0]
+
+  if blackjack?(dealer_hand)
+    return 'You lose.'
+  elsif  blackjack?(player_hand)
+    return 'Blackjack! You win!'
+  elsif player_total == 21
+    return 'You win!'
+  elsif bust?(player_hand)
+    return 'You busted.'
+  elsif bust?(dealer_hand)
+    return 'Dealer busted. You win!'
+  elsif player_total > dealer_total
+    return 'You win!'
+  elsif dealer_total > player_total
+    return 'You lose.'
+  elsif player_total == dealer_total
+    return 'Push.'
+    
+  end
 end 
 
-def get_hand_total(hand)
+def get_hand_total(hand, *final) # final = optional Boolean to indicate final hand total
 	total = [0, 0]
 	hand.each do |card|
 		if card[2].kind_of?(Array)
@@ -74,12 +94,49 @@ def get_hand_total(hand)
 			total[0] += card[2]
 			total[1] += card[2]
 		end
+    if total[1] > 21
+      total[1] = total[0]
+    end
 	end
+  if final == [1]
+    #binding.pry
+    if total[1] > total[0]
+      total[0] = total[1]
+    end
+  end
+  #add exception for 2 aces, should return [2, 13]
+  #add exception for dealer, has to stay on 17+ with an ace, if total[1] >= 17, set both to total[1]
 	return total
 end
 
-def check_bust(hand)
-	if get_hand_total(hand)[0] > 21
+def pretty_hand_total(hand)
+  hand_total = get_hand_total(hand)
+  if hand_total[0] == hand_total[1]
+    if blackjack?(hand)
+      return "Blackjack"
+    else
+      return "#{hand_total[0]}"
+    end
+  else
+    if blackjack?(hand)
+      return "Blackjack"
+    else 
+      return "#{hand_total[0]} or #{hand_total[1]}"
+    end
+  end
+end
+
+def blackjack?(hand)
+  hand_total = get_hand_total(hand)
+  if hand_total[0] == 21 or hand_total[1] == 21 and hand.length == 2
+    return true
+  end
+  return false
+end
+
+def bust?(hand)
+  hand_total = get_hand_total(hand)
+	if hand_total[0] > 21 or hand_total[1] > 21
 		return true
 	end
 	return false
@@ -94,17 +151,18 @@ begin #continue loop
 	dealer_hand = []
 
 	player_hand = start_player_hand(deck, player_hand)
-	dealer_hand = start_dealer_hand(deck, dealer_hand)
+	dealer_hand = start_dealer_hand(deck, dealer_hand)	
 
-	begin #game loop
+	draw_table(deck, player_hand, dealer_hand)
 
-		draw_table(deck, player_hand, dealer_hand)
+  #binding.pry
 
-		begin #player loop
+	if !blackjack?(player_hand) and !blackjack?(dealer_hand)
+    begin #player loop
 
-			begin 
-	      puts "Stay or Hit? (S/H)"
-	      choice = gets.chomp
+  		begin 
+        puts "Stay or Hit? (S/H)"
+        choice = gets.chomp
     	end until choice.downcase == 's' || choice.downcase == 'h'
 
     	if choice == 'h'
@@ -112,18 +170,23 @@ begin #continue loop
     		draw_table(deck, player_hand, dealer_hand)
     	end
 
-		end until choice == 's' || check_bust(player_hand) == true
+        #binding.pry
 
-		if check_bust(player_hand) == true
-			puts "You busted."
-			break
-		end
+  	end until choice == 's' || bust?(player_hand) == true
+
+    if !bust?(player_hand)
+      if get_hand_total(dealer_hand)[0] < 17 
+        begin #dealer_loop
+            dealer_hand.push(deal_card(deck))
+            draw_table(deck, player_hand, dealer_hand)
+        end until get_hand_total(dealer_hand)[0] >= 17 
+      end
+    end 
+
+   end 
 
 
-
-		winner = check_winner(dealer_hand, player_hand)	
-
-	end until winner == 'Player' || winner == 'Dealer' || winner == 'Push'
+	puts "#{check_winner(dealer_hand, player_hand)}"	
 
 
   puts "Do you want to play again? (Y/N)"

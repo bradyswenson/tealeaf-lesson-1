@@ -9,7 +9,7 @@ player_hand = Array.new
 dealer_hand = Array.new
   
 def initialize_deck(deck) #Integer - number of decks, deck 
-  for i in 1..NUMBER_OF_DECKS do
+  NUMBER_OF_DECKS.times do
     deck.concat(SINGLE_DECK) 
   end
   return deck

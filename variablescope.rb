@@ -64,3 +64,6 @@ def my_method
 end
 
 my_method
+
+# variablescope.rb:60:in `<main>': undefined local variable or method `“hi”' for main:Object (NameError)
+

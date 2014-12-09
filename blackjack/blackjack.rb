@@ -16,7 +16,7 @@ def initialize_deck(deck) #Integer - number of decks, deck
 end
 
 def deal_card(deck) #Integer - number of cards, deck
-	card = deck.shift
+	deck.shift
 end
 
 def draw_hand(hand)
@@ -47,18 +47,18 @@ def draw_table(deck, player_hand, dealer_hand)
 	system 'clear'
 	draw_hand(dealer_hand)
 	draw_hand(player_hand)
-	#binding.pry
 	puts "You have #{pretty_hand_total(player_hand, 'player')}. Dealer has #{pretty_hand_total(dealer_hand, 'dealer')}."
+	puts ""
 end
 
 def check_winner(dealer_hand, player_hand, player_name)
-	player_total = get_hand_total(player_hand, 1)[0]
-  dealer_total = get_hand_total(dealer_hand, 1)[0]
+	player_total = get_hand_total(player_hand, true)[0]
+  dealer_total = get_hand_total(dealer_hand, true)[0]
 
   if blackjack?(dealer_hand)
     return "You lost. Better luck next hand #{player_name}."
   elsif  blackjack?(player_hand)
-    return "Blackjack! You win!"
+    return "Blackjack! You win!"		
   elsif bust?(player_hand)
     return "Sorry #{player_name}, you busted."
   elsif bust?(dealer_hand)
@@ -73,7 +73,7 @@ def check_winner(dealer_hand, player_hand, player_name)
   end
 end 
 
-def get_hand_total(hand, *final) # final = optional Boolean to indicate final hand total
+def get_hand_total(hand, final = false) # final = optional Boolean to indicate final hand total
 	total = [0, 0]
 	hand.each do |card|
 		if card[2].kind_of?(Array) #if card is an ace
@@ -92,7 +92,7 @@ def get_hand_total(hand, *final) # final = optional Boolean to indicate final ha
       total[1] = total[0]
     end
 	end
-  if final == [1]
+  if final
     if total[1] > total[0]
       total[0] = total[1]
     end
@@ -170,7 +170,7 @@ begin #continue loop
     		draw_table(deck, player_hand, dealer_hand)
     	end
 
-  	end until choice == 's' || bust?(player_hand) == true
+  	end until choice == 's' || bust?(player_hand)
 
     if !bust?(player_hand)
       if get_hand_total(dealer_hand)[1] < 17 #use ace total to make dealer stand on soft 17
@@ -183,7 +183,9 @@ begin #continue loop
 
    end 
 
+
 	puts "#{check_winner(dealer_hand, player_hand, player_name)}"	
+	puts ""
 
 	if deck.count < 15
 		deck = []

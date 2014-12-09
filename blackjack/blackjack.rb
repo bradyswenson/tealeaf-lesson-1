@@ -183,7 +183,6 @@ begin #continue loop
 
    end 
 
-
 	puts "#{check_winner(dealer_hand, player_hand, player_name)}"	
 	puts ""
 

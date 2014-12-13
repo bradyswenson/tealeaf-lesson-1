@@ -183,9 +183,14 @@ begin #continue loop
 
    end 
 
+<<<<<<< HEAD
 
   puts "#{check_winner(dealer_hand, player_hand, player_name)}" 
   puts ""
+=======
+	puts "#{check_winner(dealer_hand, player_hand, player_name)}"	
+	puts ""
+>>>>>>> 200806e5fa85b1c88c7486f2bd68980469c4738f
 
   if deck.count < 15
     deck = []

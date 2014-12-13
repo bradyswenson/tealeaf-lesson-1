@@ -1,4 +1,4 @@
-Lecture part 1
+## Lecture part 1 ## 
 
 Basic Ruby Styles
 
@@ -18,7 +18,9 @@ hashes are key based, keys can be whatever you want
 arrays are index based, integers, starting with 0
 
 
-Lecure part 2
+## Lecure part 2 ##
+
+### SIMPLE CALCULATOR APP ### 
 
 1. string interpolation vs concat > http://stackoverflow.com/questions/10076579/string-concatenation-vs-interpolation-in-ruby
 Whenever TIMTOWTDI (there is more than one way to do it), you should look for the pros and cons. Using "string interpolation" (the second) instead of "string concatenation" (the first):
@@ -106,6 +108,22 @@ output:
 1
 2
 3
+
+### DEBUGGING ###
+
+Use gists for long debug output, rubber duck debugging, 
+
+### HOW TO USE SOLUTIONS ###
+
+Some people watch the solutions like watching sports - but you won't learn as much as you can that way. 
+
+Don't just save the solutions even if you are stuck, make a push, watch some of the solution and see if you are on the right track. Iterate between code and watching the solution. Don't struggle more than a couple hours. 
+
+
+
+
+
+
 
 
 
